@@ -1,0 +1,31 @@
+---
+
+- name: Update apt database
+  action: apt update_cache=yes
+
+- name: Install Python
+  action: apt pkg={{ item }} state=installed
+  with_items:
+    - python-pip
+    - build-essential
+    - libssl-dev
+    - libffi-dev
+    - python-dev
+
+- name: upgrade PIP
+  action: pip name=pip state=latest
+
+- name: install setuptools
+  action: pip name=setuptools state=latest
+
+- name: install cryptography
+  action: pip name=cryptography state=latest
+
+- name: install ansible
+  action: pip name=ansible state=latest
+
+- name: Create /etc/ansible
+  action: file path=/etc/ansible state='directory'
+
+- name: Copy ansible.cfg
+  copy: src=ansible.cfg dest=/etc/ansible/ansible.cfg owner=root group=root mode=0644
